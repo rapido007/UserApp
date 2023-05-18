@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html>
+    <head>
+        <title>TODO supply a title</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <script src="angular.min.js"></script>
+        <script>
+            var app = angular.module("app",[]);
+            app.controller("c1",function($scope,$http)
+            {
+                var utype = $http.get("http://localhost:8080/user/getUserTypeList");
+                utype.then(function(response)
+                {
+                    console.log(response.data);
+                    $scope.userType=response.data;
+                });
+                
+                var admin = $http.get("http://localhost:8080/user/getallsupportuser");
+                admin.then(function(response)
+                {
+                    console.log(response.data);
+                    $scope.allList= response.data;
+                    alert("Done");
+                });
+                
+                $scope.signup = function()
+                {
+                    alert("Sign Up");
+                    var sign = $http.get("http://localhost:8080/user/signup?name="+$scope.name+"&userTypeId="+$scope.userTypeList.id+"&phone="+$scope.phone+"&email="+$scope.email+"&password="+$scope.password+"");
+                    sign.then(function(response)
+                    {
+                        console.log(response.data);
+                        $scope.usersign=response.data;
+                    });
+                    alert("sign up done");
+                };
+                
+            });
+        </script>
+    </head>
+    <body ng-app="app" ng-controller="c1">
+        <table border>
+            <tr>
+                <td>
+                    <table border>
+                        <tr>
+                            <td colspan="2" align="center">
+                                Sign Up Form
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                Name : 
+                            </td>
+                            <td>
+                                <input type="text" ng-model="name" />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                User Type :
+                            </td>
+                            <td>
+                                <select ng-options="p.name for p in userType" ng-model="userTypeList">
+
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                Phone : 
+                            </td>
+                            <td>
+                                <input type="text" ng-model="phone" />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                Email : 
+                            </td>
+                            <td>
+                                <input type="text" ng-model="email" />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                Password : 
+                            </td>
+                            <td>
+                                <input type="text" ng-model="password" />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="2" align="center">
+                                <input type="button" value="Save" ng-click="signup();" />
+                                <input type="reset" value="Clear" />
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+                <td>
+                    <table border>
+                        <tr>
+                            <td>Name</td>
+                            <td>User Type</td>
+                            <td>Phone</td>
+                            <td>Email</td>
+                        </tr>
+                        <tr ng-repeat="usr in allList">
+                            <td>{{usr.name}}</td>
+                            <td>{{usr.userTypeId}}</td>
+                            <td>{{usr.phone}}</td>
+                            <td>{{usr.email}}</td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+        </table>
+    </body>
+</html>

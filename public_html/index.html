@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html>
+    <head>
+        <title>TODO supply a title</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <script src="angular.min.js"></script>
+        <script>
+            var app = angular.module("app2",[]);
+            app.controller("c2",function($scope,$http)
+            {
+                 $scope.login = function()
+                 {
+                    var pr = $http.get("http://localhost:8080/user/login?email="+$scope.email+"&password="+$scope.password+"");
+                    pr.then(function(response)
+                    {
+                        console.log(response.data);
+                        $scope.logindata=response.data;
+                    });
+                 };
+            });
+        </script>
+    </head>
+    <body ng-app="app2" ng-controller="c2">
+        <table border>
+            <tr>
+                <td>Email Id :</td>
+                <td>
+                    <input type="text" ng-model="email" />
+                </td>
+            </tr>
+            <tr>
+                <td>Password :</td>
+                <td>
+                    <input type="text" ng-model="password" />
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2" align="center">
+                    <input type="button" value="Login" ng-click="login();" />
+                    <input type="reset" value="Clear" />
+                </td>
+            </tr>
+        </table>
+        <br>
+        <br>
+        <br>
+        <h3>
+            {{logindata}}
+        </h3>
+    </body>
+</html>
